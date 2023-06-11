@@ -64,6 +64,23 @@ class Studio extends Phaser.Scene {
     update(){}
 }
 
+class Button {
+    constructor(x, y, label, scene, callback) {
+        const button = scene.add.text(x, y, label)
+            .setOrigin(0.5)
+            .setPadding(10)
+            .setStyle({ backgroundColor: '#111' })
+            .setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => callback())
+            .on('pointerover', () => button.setStyle({ fill: '#f39c12' }))
+            .on('pointerout', () => button.setStyle({ fill: '#FFF' }));
+    }
+};
+
+function startGame() {
+    this.scene.start("intro");
+}
+
 class MainMenu extends Phaser.Scene {
     constructor() {
         super('MainMenu');
@@ -83,61 +100,35 @@ class MainMenu extends Phaser.Scene {
         )
         this.imageObject.setScale(0.6) //resize
 
-        //create image object 
-        this.textObject = this.add.text(
-            50,//x
-            50,//y
-            "Game Name", //text
-            {
-                font: "40px Montserrat",
-                color: "#ffffff",
-            } //style
-        );
         
-        //create text object
-        this.textObject = this.add.text(
-            60, //x
-            250,//y
-            "Play", //text
-            {
-                font: "40px Montserrat",
-                color: "#ffffff",
-            } //style
-        );
+        let title = this.add.text(60, 60, "Game Name")
+            .setFontSize(40)
+            .setInteractive()
+            //.on('pointerover', () => this.setStyle({ fill: '#f39c12' }))
+            .on('pointerdown', () => {
+                this.tweens.add({
+                    targets: title,
+                    x: '+=' + this.s,
+                    repeat: 2,
+                    yoyo: true,
+                    ease: 'Sine.inOut',
+                    duration: 100
+                });
+            });
 
-        //create text object
-        this.textObject = this.add.text(
-            60, //x
-            325, //y
-            "Options", //text
-            {
-                font: "40px Montserrat",
-                color: "#ffffff",
-            } //style
-        );
+        // Then later in one of your scenes, create a new button:
+        const button = new Button(120, 250, 'Play', this, startGame);
 
-        //create text object
-        this.textObject = this.add.text(
-            60, //x
-            400, //y
-            "Credits", //text
-            {
-                font: "40px Montserrat",
-                color: "#ffffff",
-            } //style
-        );
+        // Then later in one of your scenes, create a new button:
+        const Options = new Button(120, 325, 'Options', this, () => console.log('game is started'));
 
-        //create text object
-        this.textObject = this.add.text(
-            60, //x
-            475, //y
-            "Quit", //text
-            {
-                font: "40px Montserrat",
-                color: "#ffffff",
-            } //style
-        );
-    
+
+        // Then later in one of your scenes, create a new button:
+        const Credits = new Button(120, 400, 'Credits', this, () => console.log('game is started'));
+
+
+        // Then later in one of your scenes, create a new button:
+        const Quit = new Button(120, 475, 'Quit', this, () => console.log('game is started'));
 
     }
     update(){}
