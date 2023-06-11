@@ -143,6 +143,7 @@ class MainMenu extends Phaser.Scene {
     update(){}
 }
 
+// Config
 let config = {
     type: Phaser.WEBGL,
     width: 800,
