@@ -64,6 +64,7 @@ class Studio extends Phaser.Scene {
     update(){}
 }
 
+// class sourced from https://webtips.dev/webtips/phaser/interactive-buttons-in-phaser3
 class Button {
     constructor(x, y, label, scene, callback) {
         const button = scene.add.text(x, y, label)
@@ -114,7 +115,7 @@ class MainMenu extends Phaser.Scene {
                     ease: 'Sine.inOut',
                     duration: 100
                 });
-            });
+        });
 
         // Then later in one of your scenes, create a new button:
         const button = new Button(120, 250, 'Play', this, startGame);
