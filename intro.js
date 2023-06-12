@@ -45,7 +45,7 @@ class Studio extends Phaser.Scene {
     }
 
     preload() {
-        this.load.video('Studio23', '/assets/Studio23.mp4');
+        this.load.video('Studio23', 'Studio23.mp4');
     }
 
     create(){
