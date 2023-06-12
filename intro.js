@@ -30,7 +30,7 @@ class intro extends Phaser.Scene {
         );
 
         this.input.once('pointerdown', function() {
-            this.scene.start("Studio")
+            this.scene.start("Example")
         }, this)
 
     }
@@ -38,31 +38,127 @@ class intro extends Phaser.Scene {
     update(){}
 }
 
-class Studio extends Phaser.Scene {
+
+// Code sourced and editied from 
+// https://labs.phaser.io/view.html?src=src/tweens/checkerboard%20rotate.js
+class Example extends Phaser.Scene
+{
+    constructor ()
+    {
+        super("Example");
+    }
+
+    preload ()
+    {
+        this.load.image('block', 'assets/checkerboard.png');
+    }
+
+    create ()
+    {
+        const blocks = this.add.group({ key: 'block', repeat: 107 });
+
+        Phaser.Actions.GridAlign(blocks.getChildren(), {
+            width: 12,
+            height: 9,
+            cellWidth: 74,
+            cellHeight: 74
+        });
+
+        const a = [ 0, 90, 180, 270 ];
+
+        blocks.children.iterate(child => {
+
+            child.angle = Phaser.Math.RND.pick(a);
+
+            this.tweens.add({
+                targets: child,
+                ease: 'Power1',
+                duration: 250,
+                delay: (Math.random() * 6000),
+                repeatDelay: 3000 + (Math.random() * 6000),
+                repeat: -1,
+                angle: {
+
+                    getEnd: (target, key, value) =>
+                    {
+                        var a = 90;
+
+                        if (Math.random() > 0.5)
+                        {
+                            a = 180;
+                        }
+
+                        if (Math.random() > 0.5)
+                        {
+                            return target.angle + a;
+                        }
+                        else
+                        {
+                            return target.angle - a;
+                        }
+                    },
+
+                    getStart: (target, key, value) =>
+                    {
+                        return target.angle;
+                    }
+
+                }
+
+            });
+
+            //create text object
+            this.textObject = this.add.text(
+                272, //x
+                300,//y
+                "Loading Game...", //text
+                {
+                    font: "40px Arial",
+                    color: "#000000",
+                } //style
+            );
+
+            this.time.addEvent({
+                delay: 6500,
+                callback: ()=>{
+                    this.scene.start("MainMenu");
+                },
+                loop: false,
+            })
+
+        });
+    }
+}
+
+class Loading extends Phaser.Scene {
 
     constructor() {
-        super('Studio');
+        super('Loading');
     }
 
     preload() {
-        this.load.video('Studio23', 'Studio23.mp4');
     }
 
     create(){
-        this.video = this.add.video(400, 300, 'Studio23');
-        this.video.setScale(0.45);
-        this.video.play();
-        this.time.addEvent({
-            delay: 6500,
-            callback: ()=>{
-                this.scene.start("MainMenu");
-            },
-            loop: false,
-        })
+        //create text object
+        this.textObject = this.add.text(
+            220, //x
+            300,//y
+            "Loading Game...", //text
+            {
+                font: "40px Arial",
+                color: "#ffffff",
+            } //style
+        );
+
+        this.input.once('pointerdown', function() {
+            this.scene.start("MainMenu")
+        }, this)
+
     }
 
     update(){}
-}
+} 
 
 // class sourced from https://webtips.dev/webtips/phaser/interactive-buttons-in-phaser3
 class Button {
@@ -106,30 +202,28 @@ class MainMenu extends Phaser.Scene {
             .setFontSize(40)
             .setInteractive()
             //.on('pointerover', () => this.setStyle({ fill: '#f39c12' }))
-            .on('pointerdown', () => {
-                this.tweens.add({
-                    targets: title,
-                    x: '+=' + this.s,
-                    repeat: 2,
-                    yoyo: true,
-                    ease: 'Sine.inOut',
-                    duration: 100
-                });
-        });
+            this.tweens.add({
+                targets: title,
+                x: '+=' + this.s,
+                repeat: 4,
+                yoyo: true,
+                ease: 'Sine.inOut',
+                duration: 100
+            });
 
         // Then later in one of your scenes, create a new button:
-        const button = new Button(120, 250, 'Play', this, startGame);
+        const button = new Button(95, 250, 'Play', this, startGame);
 
         // Then later in one of your scenes, create a new button:
-        const Options = new Button(120, 325, 'Options', this, () => console.log('game is started'));
+        const Options = new Button(110, 325, 'Options', this, () => console.log('game is started'));
 
 
         // Then later in one of your scenes, create a new button:
-        const Credits = new Button(120, 400, 'Credits', this, () => console.log('game is started'));
+        const Credits = new Button(110, 400, 'Credits', this, () => console.log('game is started'));
 
 
         // Then later in one of your scenes, create a new button:
-        const Quit = new Button(120, 475, 'Quit', this, () => console.log('game is started'));
+        const Quit = new Button(95, 475, 'Quit', this, () => console.log('game is started'));
 
     }
     update(){}
@@ -141,7 +235,7 @@ let config = {
     width: 800,
     height: 600,
     backgroundColor: "0x000000",
-    scene: [intro, Studio, MainMenu] 
+    scene: [intro, Loading, Example, MainMenu] 
 }
 
 let game = new Phaser.Game(config);
