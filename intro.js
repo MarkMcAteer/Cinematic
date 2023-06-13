@@ -64,24 +64,6 @@ class Studio extends Phaser.Scene {
     update(){}
 }
 
-// class sourced from https://webtips.dev/webtips/phaser/interactive-buttons-in-phaser3
-class Button {
-    constructor(x, y, label, scene, callback) {
-        const button = scene.add.text(x, y, label)
-            .setOrigin(0.5)
-            .setPadding(10)
-            .setStyle({ backgroundColor: '#111' })
-            .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => callback())
-            .on('pointerover', () => button.setStyle({ fill: '#f39c12' }))
-            .on('pointerout', () => button.setStyle({ fill: '#FFF' }));
-    }
-};
-
-function startGame() {
-    this.scene.start("intro");
-}
-
 class MainMenu extends Phaser.Scene {
     constructor() {
         super('MainMenu');
@@ -117,21 +99,186 @@ class MainMenu extends Phaser.Scene {
                 });
         });
 
-        // Then later in one of your scenes, create a new button:
-        const button = new Button(120, 250, 'Play', this, startGame);
+        // button code sourced from https://webtips.dev/webtips/phaser/interactive-buttons-in-phaser3
+        let startButton = this.add.text(120, 250, 'Play')
+            .setOrigin(0.5)
+            .setPadding(10)
+            .setStyle({ backgroundColor: '#111' })
+            .setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => { this.scene.start("Level1"); })
+            .on('pointerover', () => startButton.setStyle({ fill: '#f39c12' }))
+            .on('pointerout', () => startButton.setStyle({ fill: '#FFF' }))
 
-        // Then later in one of your scenes, create a new button:
-        const Options = new Button(120, 325, 'Options', this, () => console.log('game is started'));
+        let optionsButton = this.add.text(120, 325, 'Options')
+            .setOrigin(0.5)
+            .setPadding(10)
+            .setStyle({ backgroundColor: '#111' })
+            .setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => { this.scene.start("OptionsMenu"); })
+            .on('pointerover', () => optionsButton.setStyle({ fill: '#f39c12' }))
+            .on('pointerout', () => optionsButton.setStyle({ fill: '#FFF' }))
 
-
-        // Then later in one of your scenes, create a new button:
-        const Credits = new Button(120, 400, 'Credits', this, () => console.log('game is started'));
-
-
-        // Then later in one of your scenes, create a new button:
-        const Quit = new Button(120, 475, 'Quit', this, () => console.log('game is started'));
+        let creditsButton = this.add.text(120, 400, 'Credits')
+            .setOrigin(0.5)
+            .setPadding(10)
+            .setStyle({ backgroundColor: '#111' })
+            .setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => { this.scene.start("Credits"); })
+            .on('pointerover', () => creditsButton.setStyle({ fill: '#f39c12' }))
+            .on('pointerout', () => creditsButton.setStyle({ fill: '#FFF' }))
 
     }
+    update(){}
+}
+
+class Level1 extends Phaser.Scene {
+
+    constructor() {
+        super('Level1');
+    }
+
+    preload() {
+    }
+
+    create(){
+        //create text object
+        this.textObject = this.add.text(
+            250, //x
+            300,//y
+            "Level1 of Game goes here", //text
+            {
+                font: "40px Arial",
+                color: "#ffffff",
+            } //style
+        );
+
+        let returnButton = this.add.text(40, 20, 'Return')
+            .setOrigin(0.5)
+            .setPadding(10)
+            .setStyle({ backgroundColor: '#111' })
+            .setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => { this.scene.start("MainMenu"); })
+            .on('pointerover', () => returnButton.setStyle({ fill: '#f39c12' }))
+            .on('pointerout', () => returnButton.setStyle({ fill: '#FFF' }))
+
+    }
+
+    update(){}
+}
+
+class OptionsMenu extends Phaser.Scene {
+
+    constructor() {
+        super('OptionsMenu');
+    }
+
+    preload() {
+    }
+
+    create(){
+        //create text object
+        this.textObject = this.add.text(
+            250, //x
+            300,//y
+            "Game Options Here", //text
+            {
+                font: "40px Arial",
+                color: "#ffffff",
+            } //style
+        );
+
+        let returnButton = this.add.text(40, 20, 'Return')
+            .setOrigin(0.5)
+            .setPadding(10)
+            .setStyle({ backgroundColor: '#111' })
+            .setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => { this.scene.start("MainMenu"); })
+            .on('pointerover', () => returnButton.setStyle({ fill: '#f39c12' }))
+            .on('pointerout', () => returnButton.setStyle({ fill: '#FFF' }))
+
+    }
+
+
+
+    update(){}
+}
+
+class Credits extends Phaser.Scene {
+
+    constructor() {
+        super('Credits');
+    }
+
+    preload() {
+    }
+
+    create(){
+        //create text object
+        this.textObject = this.add.text(
+            250, //x
+            50,//y
+            "Game Credits: ", //text
+            {
+                font: "40px Arial",
+                color: "#ffffff",
+            } //style
+        );
+
+        //create text object
+        this.textObject = this.add.text(
+            230, //x
+            150,//y
+            "Harrison Le: Core Gameplay ", //text
+            {
+                font: "25px Arial",
+                color: "#ffffff",
+            } //style
+        );
+
+        //create text object
+        this.textObject = this.add.text(
+            200, //x
+            250,//y
+            "Brandon Christensen: Scene Flow", //text
+            {
+                font: "25px Arial",
+                color: "#ffffff",
+            } //style
+        );
+
+        //create text object
+        this.textObject = this.add.text(
+            230, //x
+            350,//y
+            "Mark McAteer: Cinematics", //text
+            {
+                font: "25px Arial",
+                color: "#ffffff",
+            } //style
+        );
+
+        //create text object
+        this.textObject = this.add.text(
+            250, //x
+            450,//y
+            "Jacob", //text
+            {
+                font: "25px Arial",
+                color: "#ffffff",
+            } //style
+        );
+
+        let returnButton = this.add.text(40, 20, 'Return')
+            .setOrigin(0.5)
+            .setPadding(10)
+            .setStyle({ backgroundColor: '#111' })
+            .setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => { this.scene.start("MainMenu"); })
+            .on('pointerover', () => returnButton.setStyle({ fill: '#f39c12' }))
+            .on('pointerout', () => returnButton.setStyle({ fill: '#FFF' }))
+
+    }
+
     update(){}
 }
 
@@ -141,7 +288,7 @@ let config = {
     width: 800,
     height: 600,
     backgroundColor: "0x000000",
-    scene: [intro, Studio, MainMenu] 
+    scene: [intro, Studio, MainMenu, Level1, OptionsMenu, Credits] 
 }
 
 let game = new Phaser.Game(config);
